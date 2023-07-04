@@ -1,0 +1,127 @@
+---
+title: "Scoping review of school-based interventions for students with intellectual disability"
+author: "Lucija Batinovic"
+date: "`r format(Sys.time(), '%Y-%m-%d at %H:%M:%S %Z (UTC%z)')`"
+output:
+  html_document:
+    toc: true
+    toc_depth: 2
+    code_folding: show
+editor_options: 
+  chunk_output_type: console
+---
+
+# Introduction & setup
+
+## Introduction
+
+Rationale: 
+
+Children with intellectual developmental disorder [IDD] present lower cognitive and adaptive skills (DSM-5-TR; American Psychiatric Association, 2022). This leads to poorer educational, and subsequently post-school outcomes. Bouck (2013) analyzed outcomes from the National Longitudinal Transition Study-2 (NLTS2) data which followed students’ experiences during transitioning from secondary education to adulthood. Brouck reports individuals with mild intellectual disabilities were found to have lower employment rates, lower wages, and lower participation in postsecondary education compared to their peers without disabilities. Furthermore, another analysis of the NLTS2 data (Bouck, 2012) found that individuals with moderate/severe intellectual disabilities score low on post-school outcomes. 
+	A way to ensure education leads to better outcomes is to implement evidence based practices in education. While finding and conducting high quality research in education comes with challenges (e.g., difficulties conducting true randomized controlled trials in schools), research in special education is even more complex, for its participants often vary in disability diagnoses (Odom et al., 2005). In their synthesis of what constitutes evidence based practices (EBP), some guidelines were mentioned - existence of “well-established” interventions, i.e., conducted at least two independent group-design experiments, or nine single-case studies, or “probably efficacious”, i.e., three single-subject design studies or two group-design experiments conducted by the same researcher (Odom, 2005). Furthermore, they mention meta-analyses as level one evidence of intervention effectiveness. In order to conduct a high-quality meta-analysis, a systematic review is necessary to ensure all eligible studies are discovered. 
+There have been systematic reviews, scoping reviews (and narrative reviews) and meta-analyses conducted in certain examination areas of educational outcomes and interventions for individuals with intellectual disabilities, in order to find the best evidence practices that improve educational outcomes. In their review article, Courtade et al. (2015) described advances in evidence-based practices for individuals with severe intellectual disabilities and categorized several directions of interventions that are found to be evidence based practices - reading interventions (e.g., vocabulary skills), math interventions, science teaching, etc. However, the studies found in this review were not systematically synthesized, and only focused on students with severe disabilities. Several recently conducted systematic reviews focused on students specifically with intellectual disabilities, albeit differing in their definition and severity of the disability, and focused on certain aspects of teaching interventions and their outcomes; mathematical skills (Bowman et al., 2019; Clausen et al., 2021; Schnepel & Aunio, 2021), instructions aimed to improve reading comprehension (Afacan, 2020), teaching interventions aimed to improve academic learning of students with IDD in general education classrooms (Hudson, 2013). Other systematic or scoping reviews included participants with a broader range of students with disabilities, e.g., other developmental or learning disabilities (Brock et al., 2021; Chelkowski et al., 2019), physical disabilities, general population that also includes students with ID, etc. (Hunt et al., 2021; Park et al., 2021; Daley & McCarthy, 2021; Bright, 2021; Cheung et al., 2020). Aside from academic outcomes, these reviews also aimed to find which interventions improve non-academic outcomes, such as social skills (Cheung et al., 2020), social play (Brock et al, 2021), access to education (Bright, 2021). 
+Hunt et al. (2021) recently published a  Campbell Collaboration protocol for a scoping review aiming to find interventions that improve inclusion and outcomes for people with disabilities in education. However, their focus is on individuals living in low-to-middle-income countries, and their broad scope of participants includes all groups of disabilities. As far as we know, current state of the art evidence tried to answer specific questions of intervention effectiveness or aimed to do a scoping review of a broader population with disabilities, with studies generally focusing on the U.S. population or low-to-middle income countries.
+Aforementioned array of reviews aimed to synthesize knowledge from specific areas in educational interventions, and often focused on certain subgroups of our population of interest - students with IDD. Thus, this scoping review aims to synthesize all research which implements educational interventions aimed to improve (non)academic skills in students with IDD, regardless of severity of the disability or the region where the studies were conducted. 	
+
+Impact:
+	The scoping review will provide an exhaustive overview of evidence school-based interventions for students with intellectual developmental disorder. The overview in itself will be a useful resource for policy makers. Furthermore, it creates a high-quality basis for conducting further systematic reviews in the area of special education and children with intellectual disability. It is crucial to find high quality evidence of effective interventions which help marginalized groups prosper and participate in everyday activities along with their peers, which is why this review will follow open science practices and FAIR data principles and will increase the trustworthiness in the evidence presented in the review. By following high-quality guidelines of conducting evidence synthesis, we set a standard on the evidence we provide and promote it in the research community.
+
+
+## Setup
+
+```{r, setup, echo=TRUE}
+
+###-----------------------------------------------------------------------------
+### Some booleans (logical values, set to TRUE or FALSE) to control which
+### actions are executed when the script runs
+###-----------------------------------------------------------------------------
+
+runScreeningChunks <- FALSE;
+
+###-----------------------------------------------------------------------------
+### Packages
+###-----------------------------------------------------------------------------
+
+if ((!(requireNamespace("metabefor", quietly = TRUE))) ||
+      (packageVersion("metabefor") < "0.3")) {
+  stop("You need to have at least version 0.3 of the `metabefor` package installed; ",
+       "install it with:\n\ninstall.packages('metabefor');");
+}
+
+metabefor::checkPkgs(
+  "here",               ### For easily access to files using 'relative paths'
+  "preregr",            ### For specifying (pre)registrations
+  "synthesisr",         ### For plotting
+  "ggplot2"             ### For plotting
+);
+
+### Potentially update to the development version of some packages
+# ufs::quietGitLabUpdate("r-packages/preregr@dev", quiet = FALSE);
+# ufs::quietGitLabUpdate("r-packages/rock@dev", quiet = FALSE);
+# ufs::quietGitLabUpdate("r-packages/metabefor", quiet = FALSE);
+# ufs::quietRemotesInstall("rmetaverse/synthesisr",
+#                          func = "install_github", quiet = FALSE);
+
+###-----------------------------------------------------------------------------
+### Paths
+###-----------------------------------------------------------------------------
+
+basePath <- here::here();
+scriptPath <- file.path(basePath, "scripts");
+extractionPath <- file.path(basePath, "extraction");
+rxsSpecPath <- file.path(basePath, "extraction-Rxs-spec");
+
+
+###-----------------------------------------------------------------------------
+### Settings
+###-----------------------------------------------------------------------------
+
+knitr::opts_chunk$set(
+  echo = TRUE,
+  comment = ""
+);
+
+###-----------------------------------------------------------------------------
+### Extraction script Google sheets URL
+###-----------------------------------------------------------------------------
+
+rxsSpec_googleSheetsURL <-
+  paste0("https://docs.google.com/spreadsheets/d/",
+         "1Q31P42mm6MxtY0xVsG6sXYgDM7J6F5Mq9-jto48jHWA");
+
+```
+
+# Planning
+
+## Research Question
+
+	This scoping review will provide an overview of educational interventions and assess their quality, as well as point to gaps in knowledge and guide to areas that should then be systematically reviewed and meta-analyzed in order to provide level one evidence of intervention effectiveness. With this review we aim to answer the following questions: 
+What types of educational interventions designed for k-12 (primary and secondary school) students with intellectual developmental disorder aim to improve academic, cognitive, behavioral and social skills? 
+What research designs were used to investigate effectiveness of interventions? 
+Which measurements were used to assess the effectiveness?
+Which theoretical frameworks are the basis of the interventions?
+
+## Planning: Extraction
+Data management: All search files will be saved as .bib files (if available in the search engines) and uploaded to Zotero. Unique references will be exported to a screening software and included and excluded references will be exported to .bib files that will be available on (OSF)[https://osf.io/neca5/].
+
+	Selection process: After resolving duplicates, unique references will be imported into Covidence where we will conduct title and abstract screening. Each article that goes into the screening phase will be independently screened by two reviewers based on title and abstract. All conflicts will be solved by discussion and if necessary by having a third reviewer make a decision. Full-text screening, coding of included studies and quality appraisal of each article will also be conducted by two independent reviewers with conflicts resolved by discussion, and if necessary a third reviewer.
+
+	Data collection process:  Reviewers have conducted pilot coding of a couple of articles to resolve issues and increase consistency in the actual review process. The studies that get included in the full-text reading stage will be downloaded and their data extracted in an RMarkdown file. We will code articles in the full-text stage by extracting PICOS, starting with extracting the first criteria (e.g., population) for each study, and moving on to the next criteria only if the study fits the first criteria. Once the reviewer finds that the study doesn’t fit a certain criteria, they should  stop the coding and exclude the study. Complete data from the studies eligible for the review will then be extracted using metabefor R package (materials are available on OSF: https://osf.io/neca5/).
+
+
+```{r read-extraction-script-specification, include=FALSE}
+
+###-----------------------------------------------------------------------------
+### Import rxs specifications
+###-----------------------------------------------------------------------------
+
+rxsSpecObject <-
+  metabefor::rxs_fromSpecifications(
+    rxsSpec_googleSheetsURL,
+    outputFile = file.path(
+      extractionPath,
+      "extractionScriptTemplate.rxs.Rmd"
+    )
+  );
+
+```
